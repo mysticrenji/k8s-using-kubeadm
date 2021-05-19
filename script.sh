@@ -26,10 +26,10 @@ sudo curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-ke
 sudo cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list deb https://apt.kubernetes.io/ kubernetesxenial main EOF
 
 cat <<EOF > k8s.conf
-sudo mv k8s.conf /etc/sysctl.d/
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 EOF
+sudo mv k8s.conf /etc/sysctl.d/
 
 sudo sysctl --system
 sudo lsmod | grep br_netfilter
