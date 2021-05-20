@@ -1,2 +1,2 @@
 # k8s-using-kudeadm
-Terraforming k8s cluster
+Terraforming k8s cluster using kubeadm
