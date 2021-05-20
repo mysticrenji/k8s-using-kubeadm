@@ -35,3 +35,6 @@ sudo sh -c "curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-
 sudo apt-get update
 sudo apt-get install -y kubeadm=1.20.1-00 kubelet=1.20.1-00 kubectl=1.20.1-00
 sudo apt-mark hold kubelet kubeadm kubectl
+
+sudo swapoff -a
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
