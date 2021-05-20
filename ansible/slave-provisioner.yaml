@@ -1,0 +1,16 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+# Step 3.2: Join the nodes to the Kubernetes cluster using below code.
+  - name: Copy the join command to server location
+    copy: src=./join-command dest=/tmp/join-command.sh mode=0777
+
+  - name: Join the node to cluster
+    command: sh /tmp/join-command.sh
+
+# Step 2.7: Setup a handler for checking Docker daemon using the below code.
+  handlers:
+    - name: docker status
+      service: name=docker state=started  

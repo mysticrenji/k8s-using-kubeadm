@@ -1,0 +1,63 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  
+  # - name: Copy file -Kubeadm init
+  #   ansible.builtin.copy:
+  #     src: ./kubeadm-init.yaml
+  #     dest: /home/azureuser/kubeadm-init.yaml
+  #     mode: '0644'
+
+  # - name: Copy file  - Azure Cloud conf
+  #   ansible.builtin.copy:
+  #     src: ./azure-cloud.conf
+  #     dest: /etc/kubernetes/azure-cloud.conf
+  #     mode: '0644'
+  
+  # - name: Copy file  - Azure Cloud conf
+  #   ansible.builtin.copy:
+  #     src: ./azure-cloud.conf
+  #     dest: /etc/kubernetes/azure-cloud.conf
+  #     mode: '0644'
+
+  - name: Copy Kubernets config files
+    copy: src={{ item.src }} dest={{ item.dest }}
+    with_items:
+    - { src: './kubeadm-init.yaml', dest: '/etc/kubernetes/' }
+    - { src: './azure-cloud.conf', dest: '/etc/kubernetes/' }
+    - { src: './calico.yaml', dest: '/etc/kubernetes/' }
+
+  - name: Execute Kubeadm Init Command
+    command: kubeadm init --config /etc/kubernetes/kubeadm-init.yaml
+
+  - name: Create kubeconfig and set permission
+    shell: |
+      mkdir -p $HOME/.kube
+      sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+      sudo chown $(id -u):$(id -g) $HOME/.kube/config
+    become: false
+
+  - name: Install calico pod network
+    become: false
+    command: kubectl create -f /etc/kubernetes/calico.yaml   
+    #changedthis
+    #when: installcalico is defined
+
+# Step 2.6: Generate kube join command for joining the node to the Kubernetes cluster and store the command in the file named join-command.
+  - name: Generate join command
+    command: kubeadm token create --print-join-command
+    register: join_command
+
+  - debug:
+      msg: "{{ join_command }}"
+
+  - name: Copy join command to local file
+    #changedthis
+    become: no
+    local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"
+    
+# Step 2.7: Setup a handler for checking Docker daemon using the below code.
+  handlers:
+    - name: docker status
+      service: name=docker state=started    

@@ -1,0 +1,1 @@
+kubeadm join 172.10.1.4:6443 --token avvk42.z75wowzpfd7fwlxl     --discovery-token-ca-cert-hash sha256:bfcfb3af2411d792a74758c480b6df56588a942cb526385c6e6da06d4f56f3a2 

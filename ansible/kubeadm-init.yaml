@@ -1,0 +1,29 @@
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: InitConfiguration
+nodeRegistration:
+  kubeletExtraArgs:
+    cloud-provider: "azure"
+    cloud-config: "/etc/kubernetes/azure-cloud.conf"
+---
+apiVersion: kubeadm.k8s.io/v1beta2
+kind: ClusterConfiguration
+kubernetesVersion: v1.20.1
+apiServer:
+  extraArgs:
+    cloud-provider: "azure"
+    cloud-config: "/etc/kubernetes/azure-cloud.conf"
+  extraVolumes:
+  - name: cloud
+    hostPath: "/etc/kubernetes/azure-cloud.conf"
+    mountPath: "/etc/kubernetes/azure-cloud.conf"
+controllerManager:
+  extraArgs:
+    cloud-provider: "azure"
+    cloud-config: "/etc/kubernetes/azure-cloud.conf"
+  extraVolumes:
+  - name: cloud
+    hostPath: "/etc/kubernetes/azure-cloud.conf"
+    mountPath: "/etc/kubernetes/azure-cloud.conf"
+networking:
+  serviceSubnet: "192.168.0.0/16"
+  podSubnet: "192.168.0.0/16"

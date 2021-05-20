@@ -1,0 +1,1 @@
+ANSIBLE_HOST_KEY_CHECKING=False  ansible-playbook -u ${user} -i ${public_ip}, --private-key ${private_key_path} ${provisoner}
