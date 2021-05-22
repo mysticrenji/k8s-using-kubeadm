@@ -2,24 +2,6 @@
 - hosts: all
   become: true
   tasks:
-  
-  # - name: Copy file -Kubeadm init
-  #   ansible.builtin.copy:
-  #     src: ./kubeadm-init.yaml
-  #     dest: /home/azureuser/kubeadm-init.yaml
-  #     mode: '0644'
-
-  # - name: Copy file  - Azure Cloud conf
-  #   ansible.builtin.copy:
-  #     src: ./azure-cloud.conf
-  #     dest: /etc/kubernetes/azure-cloud.conf
-  #     mode: '0644'
-  
-  # - name: Copy file  - Azure Cloud conf
-  #   ansible.builtin.copy:
-  #     src: ./azure-cloud.conf
-  #     dest: /etc/kubernetes/azure-cloud.conf
-  #     mode: '0644'
 
   - name: Copy Kubernets config files
     copy: src={{ item.src }} dest={{ item.dest }}
