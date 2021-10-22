@@ -67,14 +67,11 @@ module "compute" {
   resourcegroup    = azurerm_resource_group.resourcegroup.name
   location         = azurerm_resource_group.resourcegroup.location
   nic              = [azurerm_network_interface.nic[each.key].id]
-  publickey        = file("/home/codespace/.ssh/id_rsa.pub")
+  publickey        = file("~/.ssh/id_rsa.pub")
   vmsize           = each.value == "k8sdev-master" ? "Standard_D2s_v3" : "Standard_B2s" # "Standard_D2S_v3"
   public_ip        = [azurerm_public_ip.publicip[each.key].fqdn]
-  private_key_path = "/home/codespace/.ssh/id_rsa"
+  private_key_path = "~/.ssh/id_rsa"
   depends_on       = [azurerm_network_interface.nic]
 }
 
-module "serviceprincipal" {
-  source = "./modules/serviceprincipal"
-}
 
