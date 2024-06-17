@@ -1,11 +1,28 @@
 {
-  extends: ["config:base"],
-  // https://docs.renovatebot.com/presets-default/#automergeall
-  automerge: true,
-  // https://docs.renovatebot.com/presets-default/#automergebranch
-  automergeType: "branch",
-  // https://docs.renovatebot.com/modules/manager/pre-commit/
-  "pre-commit": {
-    enabled: true,
-  },
+  "extends": [
+    "config:base"
+  ],
+  "automerge": true,
+  "automergeType": "branch",
+  "automergeStrategy": "auto",
+  "branchPrefix": "renovate/",
+  "labels": ["dependencies"],
+  "prCreation": "immediate",
+  "dependencyDashboard": false,
+  "packageRules": [
+    {
+      "automerge": true,
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch",
+        "pin",
+        "digest",
+        "lockFileMaintenance"
+      ]
+    }
+  ],
+  "rebaseWhen": "conflicted",
+  "timezone": "UTC",
+  "platformAutomerge": true
 }
